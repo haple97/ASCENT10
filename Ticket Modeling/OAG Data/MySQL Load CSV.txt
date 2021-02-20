@@ -1,0 +1,24 @@
+Instructions: https://chartio.com/resources/tutorials/excel-to-mysql/
+
+1) OD_traffic
+CREATE TABLE OD_traffic (route_id INT NOT NULL PRIMARY KEY, dep_airport_code VARCHAR(5) NOT NULL,  gateway1_airport_code VARCHAR(5), gateway2_airport_code VARCHAR(5), arr_airport_code VARCHAR(5) NOT NULL, total_est_pax INT NOT NULL, km INT NOT NULL, cabin_first INT NOT NULL, cabin_business INT NOT NULL, cabin_premium_economy INT NOT NULL, cabin_full_y INT NOT NULL, cabin_discount_economy INT NOT NULL, avgfare_total INT NOT NULL, avgfare_first INT NOT NULL, avgfare_business INT NOT NULL, avgfare_premium_economy INT NOT NULL, avgfare_full_y INT NOT NULL, avgfare_discount_economy INT NOT NULL, time_series INT NOT NULL);
+
+LOAD DATA LOCAL INFILE '/Users/halephuong/Desktop/worldwide_OD_1120.CSV' INTO TABLE OAG_v1.OD_traffic FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES (route_id, dep_airport_code,  gateway1_airport_code, gateway2_airport_code, arr_airport_code, total_est_pax, km, cabin_first, cabin_business, cabin_premium_economy, cabin_full_y, cabin_discount_economy, avgfare_total, avgfare_first, avgfare_business, avgfare_premium_economy, avgfare_full_y, avgfare_discount_economy, time_series); 
+
+SET time_series = STR_TO_DATE(@time_series, '%Y');
+
+
+2) airports
+CREATE TABLE airports (id INT NOT NULL PRIMARY KEY, iata VARCHAR(3) NOT NULL, airport_name VARCHAR(60) NOT NULL, city_name VARCHAR(40), country_name VARCHAR(50) NOT NULL, wac_state INT, wac_sub_country INT, wac_country INT, longitude VARCHAR(12) NOT NULL, latitude VARCHAR(12) NOT NULL, eff_from DATE NOT NULL, eff_to DATE NOT NULL, region VARCHAR(3) NOT NULL);
+
+LOAD DATA LOCAL INFILE '/Users/halephuong/Desktop/worldwide_airports_info.CSV' INTO TABLE OAG_v1.airports FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES (id, iata, airport_name, city_name, country_name, wac_state, wac_sub_country, wac_country, longitude, latitude, @eff_from, @eff_to, region) SET eff_from = STR_TO_DATE(@eff_from, '%d-%b-%y'), eff_to = STR_TO_DATE(@eff_to, '%d-%b-%y');
+
+3) segment_traffic
+CREATE TABLE segment_traffic (route_id INT NOT NULL, dep_airport_code VARCHAR(5) NOT NULL,  gateway1_airport_code VARCHAR(5), gateway2_airport_code VARCHAR(5), arr_airport_code VARCHAR(5) NOT NULL, total_est_pax INT NOT NULL, km INT NOT NULL, cabin_first INT NOT NULL, cabin_business INT NOT NULL, cabin_premium_economy INT NOT NULL, cabin_full_y INT NOT NULL, cabin_discount_economy INT NOT NULL, avgfare_total INT NOT NULL, avgfare_first INT NOT NULL, avgfare_business INT NOT NULL, avgfare_premium_economy INT NOT NULL, avgfare_full_y INT NOT NULL, avgfare_discount_economy INT NOT NULL, time_series INT NOT NULL, route VARCHAR(7) NOT NULL, segment VARCHAR(7) NOT NULL);
+
+LOAD DATA LOCAL INFILE '/Users/halephuong/Desktop/OD_with_segment_one.CSV' INTO TABLE OAG_v1.segment_traffic FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES (route_id, dep_airport_code,  gateway1_airport_code, gateway2_airport_code, arr_airport_code, total_est_pax, km, cabin_first, cabin_business, cabin_premium_economy, cabin_full_y, cabin_discount_economy, avgfare_total, avgfare_first, avgfare_business, avgfare_premium_economy, avgfare_full_y, avgfare_discount_economy, time_series, route, segment); 
+
+Number of entries: 
+685957
+28737816
+= 29423773
