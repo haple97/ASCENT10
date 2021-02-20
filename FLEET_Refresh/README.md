@@ -6,3 +6,8 @@ Python with Jupyter Notebook was used mainly for the task. There were three step
 - Data manipulation commands were created based on purpose and assumptions of the project. The Data Filters Code folder consists of 3 different versions: one was the discovered version the original code used up until May 2020, and the other two were updated code for higher validity used since May 2020 for analysis of yearly and monthly demand. 
 - Outputs were checked with current data used in FLEET Tool. The code used for this step is in Output Comparison Code folder. 
 - Once the data manipulation steps satisfied, the outputs were converted into a demand matrix and MATLAB file. OD Matrix Generation Code folder contains code used for this step. 
+
+Information: 
+- Python 3
+- Jupyter notebook 
+- Libraries: numpy, pandas
